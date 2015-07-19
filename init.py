@@ -1,18 +1,23 @@
+# -*- coding:utf-8 -*-
 import pickle
-import os.path
+import os
 from settings import *
 
-if os.path.exists(DATA_STORED_PATH):
+
+"""
+若文件不存在：创建并初始化
+若文件内格式不正确：初始化
+"""
+try:
     f = open(DATA_STORED_PATH, 'rb')
-    try:
-        data = pickle.load(f)
-    except Exception, e:
-        f.close()
-        w_file = open(DATA_STORED_PATH, 'wb')
-        input = {
-            COMPANY: {}
-        }
-        pickle.dump(input, w_file, -1)
-        w_file.close()
-        print '---Exception---init.py:', e
-    print data
+    pickle.load(f)
+    f.close()
+except Exception, e:
+    w_file = open(DATA_STORED_PATH, 'wb')
+    input = {
+        COMPANY: {}
+    }
+    pickle.dump(input, w_file, -1)
+
+    w_file.close()
+    print '---Exception:', e, u'已被处理'
